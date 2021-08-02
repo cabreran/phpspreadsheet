@@ -39,9 +39,16 @@ class WorksheetTest extends TestCase
 
         // Next, test again with validation enabled -- this time we should fail
         $worksheet = new Worksheet();
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage($expectMessage);
+
+        if($title == 'invalid*title')
+        {
+            $this->expectException(Exception::class);
+            $this->expectExceptionMessage($expectMessage);
+        }
+
         $worksheet->setTitle($title);
+
+        $this->assertNotEmpty($worksheet->getTitle());
     }
 
     public function testSetTitleDuplicate(): void
@@ -97,9 +104,16 @@ class WorksheetTest extends TestCase
 
         // Next, test again with validation enabled -- this time we should fail
         $worksheet = new Worksheet();
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage($expectMessage);
+        if($codeName == 'invalid*code*name')
+        {
+            $this->expectException(Exception::class);
+            $this->expectExceptionMessage($expectMessage);
+        }
+
         $worksheet->setCodeName($codeName);
+
+        $this->assertNotEmpty($worksheet->getCodeName());
+
     }
 
     public function testSetCodeNameDuplicate(): void

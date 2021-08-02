@@ -446,7 +446,8 @@ class Worksheet implements IComparable
 
         // Enforce maximum characters allowed for sheet title
         if ($CharCount > self::SHEET_TITLE_MAXIMUM_LENGTH) {
-            throw new Exception('Maximum ' . self::SHEET_TITLE_MAXIMUM_LENGTH . ' characters allowed in sheet code name.');
+            $pValue = self::exploteTitle($pValue);
+//          throw new Exception('Maximum ' . self::SHEET_TITLE_MAXIMUM_LENGTH . ' characters allowed in sheet code name.');
         }
 
         return $pValue;
@@ -468,10 +469,25 @@ class Worksheet implements IComparable
 
         // Enforce maximum characters allowed for sheet title
         if (Shared\StringHelper::countCharacters($pValue) > self::SHEET_TITLE_MAXIMUM_LENGTH) {
-            throw new Exception('Maximum ' . self::SHEET_TITLE_MAXIMUM_LENGTH . ' characters allowed in sheet title.');
+            $pValue = self::exploteTitle($pValue);
+//            throw new Exception('Maximum ' . self::SHEET_TITLE_MAXIMUM_LENGTH . ' characters allowed in sheet title.');
         }
 
         return $pValue;
+    }
+
+    /**
+     * If the title is greater than 31 characters, it will be split to create a new shorter title.
+     *
+     * @param string $pValue The string to explode
+     *
+     * @return string The new string
+     */
+    private static function exploteTitle($pvalue)
+    {
+        $pvalue = (strpos($pvalue, ' '))? explode(' ',$pvalue) : str_split($pvalue);
+
+        return $pvalue[0] . ' ' . $pvalue[1] . ' ' . $pvalue[2];
     }
 
     /**
@@ -852,7 +868,7 @@ class Worksheet implements IComparable
 
         if ($validate) {
             // Syntax check
-            self::checkSheetTitle($title);
+            $title = self::checkSheetTitle($title);
 
             if ($this->parent) {
                 // Is there already such sheet name?
@@ -2991,7 +3007,7 @@ class Worksheet implements IComparable
 
             // Syntax check
             // throw an exception if not valid
-            self::checkSheetCodeName($pValue);
+            $pValue = self::checkSheetCodeName($pValue);
 
             // We use the same code that setTitle to find a valid codeName else not using a space (Excel don't like) but a '_'
 
