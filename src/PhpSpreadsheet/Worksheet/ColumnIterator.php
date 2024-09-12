@@ -134,6 +134,7 @@ class ColumnIterator implements Iterator
      *
      * @return Column
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return new Column($this->worksheet, Coordinate::stringFromColumnIndex($this->currentColumnIndex));
