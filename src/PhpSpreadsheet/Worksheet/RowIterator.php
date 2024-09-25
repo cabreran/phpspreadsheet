@@ -118,6 +118,7 @@ class RowIterator implements Iterator
      *
      * @return Row
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return new Row($this->subject, $this->position);
